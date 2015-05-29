@@ -14,7 +14,7 @@
                 <input type="text" placeholder="searchin" />
             </div>
             <div class="places">
-                <ul data-bind="foreach: locations">
+                <ul data-bind="foreach: locations.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 })">
                     <li><span data-bind="text: name, click: toggleMarker" /></li>
                 </ul>
             </div>
