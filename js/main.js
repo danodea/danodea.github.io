@@ -36,12 +36,6 @@ var breweries = [
     lng: -86.1458764
   },
   {
-    name: "Union Brewing Company",
-    address: "622 North Rangeline Road, Carmel, IN, 46032",
-    lat: 39.9836059,
-    lng: -86.1271129
-  },
-  {
     name: "Fountain Square Brewery",
     address: "1301 Barth Ave, Indianapolis, IN, 46203",
     lat: 39.749593,
@@ -137,10 +131,10 @@ var Brewery = function(data) {
 };
 
 var map = new google.maps.Map(document.getElementById('google_map'), {
-    zoom: 11,
+    zoom: 12,
     center: { 
-      lat: 39.768403,
-      lng: -86.158068
+      lat: 39.845679452282155,
+      lng: -86.16081458203126
     }
 });
 
