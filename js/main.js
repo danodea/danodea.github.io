@@ -1,4 +1,4 @@
-var model = [
+var breweries = [
   {
     name: "Sun King Brewing",
     address: "135 N College Ave, Indianapolis, IN, 46202",
@@ -73,18 +73,49 @@ var model = [
   }
 ];
 
+var Brewery = function(data) {
+  var self = this;
+  this.name = ko.observable(data.name);
+  this.address = ko.observable(data.address);
+  this.latLng = new google.maps.LatLng(data.lat, data.lng);
 
-function initGoogleMap() {
-  var mapOptions = {
+  this.marker = ko.observable(new google.maps.Marker({
+      position: this.latLng,
+      map: map,
+      title: this.name()
+  }));
+
+  google.maps.event.addListener(self.marker(), 'click', function() {
+    map.setZoom(14);
+    map.setCenter(self.marker().getPosition());
+    console.log('clicked ' + self.name());
+  });
+
+  toggleMarker = function() {
+    if (this.marker().map) {
+      this.marker().setMap(null);
+    } else {
+      this.marker().setMap(map);
+    }
+  }
+};
+
+var map = new google.maps.Map(document.getElementById('google_map'), {
+    zoom: 11,
     center: { 
       lat: 39.768403,
       lng: -86.158068
-    },
-    zoom: 11
-  };
+    }
+});
 
-  var map = new google.maps.Map(document.getElementById('google_map'), mapOptions);
+var ViewModel = function() {
+  var self = this;
 
-};
+  self.locations = ko.observableArray([]);
 
-google.maps.event.addDomListener(window, 'load', initGoogleMap);
+  breweries.forEach(function(breweryData) {
+    self.locations.push( new Brewery(breweryData) )
+  });
+}
+
+ko.applyBindings( new ViewModel() );

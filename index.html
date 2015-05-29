@@ -8,9 +8,18 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <div class="wrapper">
-            <div class="map" id="google_map"></div>
+        <div class="map" id="google_map"></div>
+        <div class="menu">
+            <div class="search">
+                <input type="text" placeholder="searchin" />
+            </div>
+            <div class="places">
+                <ul data-bind="foreach: locations">
+                    <li><span data-bind="text: name, click: toggleMarker" /></li>
+                </ul>
+            </div>
         </div>
+        
 
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1z0leMsqILGNbXvZ-21ODoVwGob_a5W8"></script>
         <script type='text/javascript' src='js/vendor/knockout-3.3.0.js'></script>

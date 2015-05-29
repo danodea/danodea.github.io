@@ -1,12 +1,28 @@
-.wrapper, html, body { 
-	height: 100%; 
-	width: 100%; 
-}
-
-.wrapper { 
-	position: relative; 
+/* must have a set size or else the google map doesn't work; see API docs */
+.wrapper, body, html {
+	height: 100%;
+	width: 100%;
 }
 
 .map { 
+	float: left;
 	height: 100%;  
+	width: 70%;
+}
+
+.menu {
+	width: 30%;
+	float: right;
+}
+
+input {
+	width: 100%;
+}
+
+li {
+	line-height: 1.6em;
+}
+
+li span {
+	cursor: pointer;
 }
