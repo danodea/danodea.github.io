@@ -3,7 +3,7 @@ var breweries = [
     name: "Sun King Brewing",
     address: "135 N College Ave, Indianapolis, IN, 46202",
     lat: 39.7690233,
-    lng: -86.14462069999999
+    lng: -86.1446207
   },
   {
     name: "Flat 12 Bierwerks",
@@ -33,7 +33,7 @@ var breweries = [
     name: "Upland Brewing Company",
     address: "4842 N College Ave, Indianapolis, IN, 46205",
     lat: 39.8426549,
-    lng: -86.14587639999999
+    lng: -86.1458764
   },
   {
     name: "Union Brewing Company",
@@ -51,7 +51,7 @@ var breweries = [
     name: "Outliers Brewing Company",
     address: "534 North St, Indianapolis, IN, 46204",
     lat: 39.775265,
-    lng: -86.14744549999999
+    lng: -86.1474455
   },
   {
     name: "Black Acre Brewing",
@@ -63,14 +63,50 @@ var breweries = [
     name: "TwoDEEP Brewing Company",
     address: "714 N Capitol Ave, Indianapolis, IN, 46204",
     lat: 39.777248,
-    lng: -86.16183699999999
+    lng: -86.161837
   },
   {
     name: "Tow Yard Brewing Company",
     address: "501 Madison Ave, Indianapolis, IN, 46225",
     lat: 39.759948,
     lng: -86.156913
-  }
+  },
+  {
+    name: "New Day Meadery",
+    address: "1102 Prospect St, Indianapolis, IN, 46203",
+    lat: 39.752579,
+    lng: -86.139644 
+  },
+  {
+    name: "Wabash Brewing",
+    address: "5328 W 79th St, Indianapolis, IN, 46268",
+    lat: 39.8963849,
+    lng: -86.25316078 
+  },
+  {
+    name: "Brugge Brasserie",
+    address: "1011a E Westfield Blvd, Indianapolis, IN, 46220",
+    lat: 39.8705353,
+    lng: -86.1411883 
+  },
+  {
+    name: "Books and Brews",
+    address: "9402 Uptown Dr, Ste 1400, Indianapolis, IN, 46256",
+    lat: 39.9242458,
+    lng: -86.0362054
+  },
+  {
+    name: "Thr3e Wise Men Brewing Company",
+    address: "1021 Broad Ripple Ave, Indianapolis, IN, 46220",
+    lat: 39.8694841,
+    lng: -86.1407477
+  },
+  {
+    name: "Chilly Water Brewing Company",
+    address: "719 Virginia Ave, Ste 105, Indianapolis, IN, 46203",
+    lat: 39.7571583,
+    lng:  -86.1457019
+  },
 ];
 
 var Brewery = function(data) {
