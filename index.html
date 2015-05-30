@@ -15,7 +15,7 @@
             </div>
             <div class="places">
                 <ul data-bind="foreach: locations.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 })">
-                    <li><span data-bind="text: name, click: toggleMarker" /></li>
+                    <li><span data-bind="text: name, click: centerMapOnMarker" /></li>
                 </ul>
             </div>
         </div>

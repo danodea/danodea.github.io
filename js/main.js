@@ -121,12 +121,10 @@ var Brewery = function(data) {
     console.log('clicked ' + self.name());
   });
 
-  toggleMarker = function() {
-    if (this.marker().map) {
-      this.marker().setMap(null);
-    } else {
-      this.marker().setMap(map);
-    }
+  this.centerMapOnMarker = function() {
+    map.setZoom(14);
+    map.setCenter(self.marker().getPosition());
+    console.log('clicked ' + self.name())
   }
 };
 
