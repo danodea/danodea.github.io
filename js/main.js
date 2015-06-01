@@ -2,24 +2,14 @@ var Brewery = function(data) {
   var self = this;
   this.name = ko.observable(data.name);
   this.address = ko.observable(data.address);
-  this.latLng = new google.maps.LatLng(data.lat, data.lng);
+  this.latLng = ko.observable(new google.maps.LatLng(data.lat, data.lng));
+  this.visible = ko.observable(true);
 
-  this.marker = ko.observable(new google.maps.Marker({
-      position: this.latLng,
+  this.marker = new google.maps.Marker({
+      position: this.latLng(),
       map: map,
       title: this.name()
-  }));
-
-  this.centerMapOnMarker = function() {
-    map.setZoom(14);
-    map.setCenter(self.marker().getPosition());
-    console.log('clicked ' + self.name())
-  };
-
-  google.maps.event.addListener(self.marker(), 'click', function() {
-    self.centerMapOnMarker();
   });
-  
 };
 
 var map = new google.maps.Map(document.getElementById('google_map'), {
@@ -30,6 +20,8 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
     }
 });
 
+var infowindow = new google.maps.InfoWindow();
+
 var ViewModel = function() {
   var self = this;
 
@@ -38,6 +30,22 @@ var ViewModel = function() {
   breweries.forEach(function(breweryData) {
     self.locations.push( new Brewery(breweryData) )
   });
+
+  self.locations().forEach(function(brewery) {
+    google.maps.event.addListener(brewery.marker, 'click', function() {
+      self.handleClick(brewery);
+    });
+  });
+  
+  this.handleClick = function(brewery) {
+    map.setZoom(14);
+    map.setCenter(brewery.latLng());
+    console.log('clicked ' + brewery.name());
+    brewery.marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){ brewery.marker.setAnimation(null); }, 750);
+    infowindow.open(map, brewery.marker);
+    infowindow.setContent(brewery.name());
+  }
 }
 
 ko.applyBindings( new ViewModel() );
