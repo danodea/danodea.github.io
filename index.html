@@ -11,13 +11,13 @@
         <div class="map" id="google_map"></div>
         <div class="menu">
             <div class="search">
-                <input type="text" placeholder="searchin" />
+                <input type="text" data-bind="textInput: searchString" placeholder="searchin" />
             </div>
             <div class="places">
-                <ul data-bind="foreach: locations.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 })">
-                    <li><span data-bind="visible: visible, text: name, click: $parent.handleClick" /></li>
+                <ul data-bind="foreach: filteredLocations">
+                    <li><span data-bind="text: name, click: $parent.handleClick" /></li>
                 </ul>
-            </div>
+            </div> 
         </div>
         
 
