@@ -11,6 +11,17 @@ var Brewery = function(data) {
       map: null,
       title: this.name()
   });
+
+  // Nested if statements to avoid markers flickering on each keystroke
+  this.toggleMarker = function(value) {
+    if (value === map) {
+      if (self.marker.map === null) {
+        self.marker.setMap(map)
+      }
+    } else {
+      self.marker.setMap(null)
+    }
+  }
 };
 
 var map = new google.maps.Map(document.getElementById('google_map'), {
@@ -21,32 +32,39 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
     }
 });
 
+// Create one infowindow object that will be opened at various locations and have its contents changed
 var infowindow = new google.maps.InfoWindow();
+
 
 var ViewModel = function() {
   var self = this;
 
   this.searchString = ko.observable('');
-  this.locations = ko.observableArray([]);
 
+  // This array will hold all of the brewery objects
+  this.locations = ko.observableArray([]);
   breweries.forEach(function(breweryData) {
     self.locations.push( new Brewery(breweryData) )
   });
 
+  // Add a click handler to each marker.  
+  // Can maybe be combined into the locations array creator.
   this.locations().forEach(function(brewery) {
     google.maps.event.addListener(brewery.marker, 'click', function() {
       self.handleClick(brewery);
     });
   });
 
+  // Determine which locations to display based on the user's search
+  // This is an array, but NOT an _observable_ array
   this.filteredLocations = ko.computed(function() {
     var searchedBreweries = [];
     for (i = 0; i < self.locations().length; i++) {
         if (self.locations()[i].name().toLowerCase().indexOf(self.searchString().toLowerCase()) != -1) {
           searchedBreweries.push(self.locations()[i]);
-          self.locations()[i].marker.setMap(map);
+          self.locations()[i].toggleMarker(map);
         } else {
-          self.locations()[i].marker.setMap(null);
+          self.locations()[i].toggleMarker();
         }
     }
     return searchedBreweries.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 });
