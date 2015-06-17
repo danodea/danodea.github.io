@@ -1,10 +1,11 @@
-
-
 var Brewery = function(data) {
   var self = this;
   this.name = ko.observable(data.name);
   this.address = ko.observable(data.address);
   this.latLng = ko.observable(new google.maps.LatLng(data.lat, data.lng));
+  this.yelpID = ko.observable(data.yelpID);
+  this.yelpRatingImg = ko.observable('');
+  this.foursquareID = ko.observable(data.foursquareID);
 
   this.marker = new google.maps.Marker({
       position: this.latLng(),
@@ -31,10 +32,6 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
       lng: -86.16081458203126
     }
 });
-
-// Create one infowindow object that will be opened at various locations and have its contents changed
-var infowindow = new google.maps.InfoWindow();
-
 
 var ViewModel = function() {
   var self = this;
@@ -70,14 +67,83 @@ var ViewModel = function() {
     return searchedBreweries.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 });
   })
 
+  // Create one infowindow object that will be opened at various locations and have its contents changed
+  this.infowindow = new google.maps.InfoWindow();
+  self.infowindow.setContent("<div id='infowindow'><h2 id='iwName'></h2><div id='iwYelp'><img src='img/yelp-logo.png' alt='The Yelp Logo' /><p>Rating: </p><img id='yelpRating' src='img/loading.gif' /></div><div id='iwFoursquare'><img src ='img/foursquare-logo.png' alt='The Foursquare Logo' /><span id='foursquareRating'><img src='img/loading.gif' /></span></div></div>");
+
   this.handleClick = function(brewery) {
     map.setZoom(14);
     map.setCenter(brewery.latLng());
-    console.log('clicked ' + brewery.name());
     brewery.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){ brewery.marker.setAnimation(null); }, 750);
-    infowindow.open(map, brewery.marker);
-    infowindow.setContent(brewery.name());
+    self.getYelpInfo(brewery);
+    self.getFoursquareInfo(brewery);
+    self.infowindow.open(map, brewery.marker);
+    $('#iwName').text(brewery.name());
+  }
+
+  this.getYelpInfo = function(brewery) {
+    $('#yelpRating').attr("src", 'img/loading.gif');
+    var httpMethod = 'GET';
+    var builtURL = 'http://api.yelp.com/v2/business/' + brewery.yelpID();
+    var nonceMaker =  function() {
+        return (Math.floor(Math.random() * 1e12).toString());
+    };
+
+    var parameters = 
+        {
+            oauth_consumer_key : '6FZQD1_YWvn2MNTmlYBVNQ',
+            oauth_token : 'j8iHnHl6tE2kRly_vOnxXZHYQZfIsIXR',
+            oauth_nonce : nonceMaker(),
+            oauth_timestamp : Math.floor(Date.now()/1000),
+            oauth_signature_method : 'HMAC-SHA1',
+            oauth_version : '1.0',
+            callback: 'callback'
+        };
+
+    var consumerSecret = 'Z81s01xE4T2x20quzxj25luAQYM';
+    var tokenSecret = 'URYmHl-hsdjCSq3TtzGkO9Hu350';
+
+    var encodedSignature = oauthSignature.generate(httpMethod, builtURL, parameters, consumerSecret, tokenSecret);
+    parameters.oauth_signature = encodedSignature;
+
+    var settings = {
+      url: builtURL,
+      data: parameters,
+      cache: true,
+      dataType: 'jsonp',
+      success: function(results) {
+        $('#yelpRating').attr("src", results.rating_img_url);
+      }
+    };
+    $.ajax(settings);
+  }
+
+  this.getFoursquareInfo = function(brewery) {
+    $('#foursquareRating').html('<img src="img/loading.gif" />');
+    var d = new Date();
+    var foursquareDate = d.getFullYear().toString() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
+    var foursquareClientID = 'YH1RZFX1LIWV00KWMBE4IAMQAMRRIWUY2VBW5ERBQ0O0BWUP';
+    var foursquareClientSecret = 'OHZQMS0ZWF0WC0NY5TPTMZLKUSLT2PATBTLSLN2OPMXFIVLB';
+    var builtURL = 'https://api.foursquare.com/v2/venues/' + brewery.foursquareID() + '?&client_id=' + foursquareClientID + '&client_secret=' + foursquareClientSecret + '&v=' + foursquareDate;
+
+    var settings = {
+      url: builtURL,
+      success: function(results) {
+        if (results.response.venue.rating) {
+          $('#foursquareRating').html('<p>Rating: ' + results.response.venue.rating + ' out of 10 based on ' + results.response.venue.ratingSignals + ' ratings!</p>');
+        } else {
+          $('#foursquareRating').html('<p>Not enough ratings! Why don\'t you go there, have some beers, and rate it?!</p>')
+        };
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log('textStatus: ' + textStatus);
+        console.log('error: ' + errorThrown);
+      }
+    };
+
+    $.ajax(settings);
+
   }
 }
 
