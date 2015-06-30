@@ -2,27 +2,53 @@
 .wrapper, body, html {
 	height: 100%;
 	width: 100%;
+	background-color: #fffafa;
+	color: #383838;
 }
 
 .map { 
 	float: left;
 	height: 100%;  
-	width: 70%;
+	width: 75%;
 }
 
 .menu {
-	width: 30%;
+	width: 25%;
+	height: 100%;
 	float: right;
+	overflow-y: scroll;
 }
 
 input {
-	width: 98%;
+	width: 95%;
+	margin: auto;
+}
+
+ul {
+	padding: 0 0 0 10px;
+	list-style: inside;
 }
 
 li {
-	line-height: 1.6em;
+	margin: .8em 0 0 0;
 }
 
 li span {
+	text-decoration: underline;
 	cursor: pointer;
 }
+
+@media (max-width: 780px) {
+	body {
+		font-size: 12px;
+	}
+
+}
+
+@media (max-width: 500px) {
+	body {
+		font-size: 9px;
+	}
+
+}
+

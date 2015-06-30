@@ -33,6 +33,22 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
     }
 });
 
+var infoWindowContent = 
+  "<div id='infowindow'>" + 
+    "<h2 id='iwName'></h2>" + 
+    "<div id='iwYelp'>" + 
+      "<img src='img/yelp-logo.png' alt='The Yelp Logo' />" +
+      "<p>Rating: </p>" +
+      "<img id='yelpRating' src='img/loading.gif' />" + 
+    "</div>" + 
+    "<div id='iwFoursquare'>" + 
+      "<img src ='img/foursquare-logo.png' alt='The Foursquare Logo' />" + 
+      "<span id='foursquareRating'>" + 
+        "<img src='img/loading.gif' />" +
+      "</span>" + 
+    "</div>" + 
+  "</div>";
+
 var ViewModel = function() {
   var self = this;
 
@@ -69,7 +85,7 @@ var ViewModel = function() {
 
   // Create one infowindow object that will be opened at various locations and have its contents changed
   this.infowindow = new google.maps.InfoWindow();
-  self.infowindow.setContent("<div id='infowindow'><h2 id='iwName'></h2><div id='iwYelp'><img src='img/yelp-logo.png' alt='The Yelp Logo' /><p>Rating: </p><img id='yelpRating' src='img/loading.gif' /></div><div id='iwFoursquare'><img src ='img/foursquare-logo.png' alt='The Foursquare Logo' /><span id='foursquareRating'><img src='img/loading.gif' /></span></div></div>");
+  self.infowindow.setContent(infoWindowContent);
 
   this.handleClick = function(brewery) {
     map.setZoom(14);
