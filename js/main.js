@@ -1,18 +1,20 @@
+// Constructor funciton to turn model data into Brewery objects
 var Brewery = function(data) {
   var self = this;
   this.name = ko.observable(data.name);
   this.address = ko.observable(data.address);
   this.latLng = ko.observable(new google.maps.LatLng(data.lat, data.lng));
   this.yelpID = ko.observable(data.yelpID);
-  this.yelpRatingImg = ko.observable('');
   this.foursquareID = ko.observable(data.foursquareID);
 
+  // Create markers, but don't set them on the map yet
   this.marker = new google.maps.Marker({
       position: this.latLng(),
       map: null,
       title: this.name()
   });
 
+  // Function to display or hide the marker
   // Nested if statements to avoid markers flickering on each keystroke
   this.toggleMarker = function(value) {
     if (value === map) {
@@ -25,6 +27,7 @@ var Brewery = function(data) {
   }
 };
 
+// Make the map!
 var map = new google.maps.Map(document.getElementById('google_map'), {
     zoom: 12,
     center: { 
@@ -33,6 +36,8 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
     }
 });
 
+// Get the default InfoWindow content ready
+// There is only one InfoWindow, and it's content changes based on which brewery is clicked
 var infoWindowContent = 
   "<div id='infowindow'>" + 
     "<h2 id='iwName'></h2>" + 
@@ -49,6 +54,7 @@ var infoWindowContent =
     "</div>" + 
   "</div>";
 
+// All the important stuff happens in here
 var ViewModel = function() {
   var self = this;
 
@@ -69,7 +75,7 @@ var ViewModel = function() {
   });
 
   // Determine which locations to display based on the user's search
-  // This is an array, but NOT an _observable_ array
+  // This is an array that is a computed observable, but it's NOT an _observable_ array
   this.filteredLocations = ko.computed(function() {
     var searchedBreweries = [];
     for (i = 0; i < self.locations().length; i++) {
@@ -80,6 +86,7 @@ var ViewModel = function() {
           self.locations()[i].toggleMarker();
         }
     }
+    // Array must be sorted here because it's not an observable array
     return searchedBreweries.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 });
   })
 
@@ -87,21 +94,31 @@ var ViewModel = function() {
   this.infowindow = new google.maps.InfoWindow();
   self.infowindow.setContent(infoWindowContent);
 
+  // All kinds of stuff needs to happen when a marker or list item is clicked on
   this.handleClick = function(brewery) {
+    // Zoom in, center, and bounce the marker
     map.setZoom(14);
     map.setCenter(brewery.latLng());
     brewery.marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){ brewery.marker.setAnimation(null); }, 750);
+    // Async calls to get brewery ratings
     self.getYelpInfo(brewery);
     self.getFoursquareInfo(brewery);
+    // Open the InfoWindow on the associated marker
     self.infowindow.open(map, brewery.marker);
     $('#iwName').text(brewery.name());
   }
 
+  // Get that Yelp info!
   this.getYelpInfo = function(brewery) {
+    // Set rating to a loading gif
     $('#yelpRating').attr("src", 'img/loading.gif');
+
+    // The rest of this is getting ready for and then doing the ajax call
     var httpMethod = 'GET';
     var builtURL = 'http://api.yelp.com/v2/business/' + brewery.yelpID();
+
+    // vvv Everything from here vvvv
     var nonceMaker =  function() {
         return (Math.floor(Math.random() * 1e12).toString());
     };
@@ -122,47 +139,72 @@ var ViewModel = function() {
 
     var encodedSignature = oauthSignature.generate(httpMethod, builtURL, parameters, consumerSecret, tokenSecret);
     parameters.oauth_signature = encodedSignature;
+    // ^^^^ to here ^^^^ is for oauth.
+    // oauth really isn't supposed to be used like this, so this is an insecure and bad workaround
+    // that relies on a 3rd party library to work.
 
+
+    // creat the settings object for the ajax call
     var settings = {
       url: builtURL,
       data: parameters,
       cache: true,
       dataType: 'jsonp',
+      // If it works, grab the Yelp rating image url and put it in the InfoWindow!
       success: function(results) {
         $('#yelpRating').attr("src", results.rating_img_url);
       }
+      // Where is the error handler, you ask?
+      // It's the loading gif!
+      // JSONP doesn't play well with errors
+      // You COULD set a timeout function that changes the loading gif to 'failed to load' or something
+      // after like 5 or 10 seconds...
+      // But I don't like that idea
     };
+
+    // Holy smokes, we finally make the ajax call here
     $.ajax(settings);
   }
 
+  // Get that Foursquare info!
   this.getFoursquareInfo = function(brewery) {
+    // Loading gif!
     $('#foursquareRating').html('<img src="img/loading.gif" />');
+
+    // This is so much easier than oauth...
     var d = new Date();
     var foursquareDate = d.getFullYear().toString() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2);
     var foursquareClientID = 'YH1RZFX1LIWV00KWMBE4IAMQAMRRIWUY2VBW5ERBQ0O0BWUP';
+
+    // but it's still not exactly secure.
+    // Once I'm done with the final project, 
+    // I'm gonna figure out how do this serverside using node.js
     var foursquareClientSecret = 'OHZQMS0ZWF0WC0NY5TPTMZLKUSLT2PATBTLSLN2OPMXFIVLB';
+
     var builtURL = 'https://api.foursquare.com/v2/venues/' + brewery.foursquareID() + '?&client_id=' + foursquareClientID + '&client_secret=' + foursquareClientSecret + '&v=' + foursquareDate;
 
+    // Create settings object for ajax call
     var settings = {
       url: builtURL,
+      // Foursquare has a minimum number of reviews before it actually assigns a rating,
+      // so you have to catch that or else it displays an ugly error
       success: function(results) {
         if (results.response.venue.rating) {
           $('#foursquareRating').html('<p>Rating: ' + results.response.venue.rating + ' out of 10 based on ' + results.response.venue.ratingSignals + ' ratings!</p>');
         } else {
           $('#foursquareRating').html('<p>Not enough ratings! Why don\'t you go there, have some beers, and rate it?!</p>')
         };
-      },
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.log('textStatus: ' + textStatus);
-        console.log('error: ' + errorThrown);
       }
+      // No dedicated error handler cause I'm just using the loading gif
     };
 
+    // The actuall ajax call!
     $.ajax(settings);
 
   }
 }
 
+// Gotta apply the bindings or nothing happens!
 ko.applyBindings( new ViewModel() );
 
 

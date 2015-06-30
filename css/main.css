@@ -1,5 +1,6 @@
-/* must have a set size or else the google map doesn't work; see API docs */
-.wrapper, body, html {
+/* must have a set height or else the google map doesn't work,
+and you can't have a height without a width! */
+body, html {
 	height: 100%;
 	width: 100%;
 	background-color: #fffafa;
