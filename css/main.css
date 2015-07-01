@@ -39,6 +39,32 @@ li span {
 	cursor: pointer;
 }
 
+#infowindow {
+	border: 1px #383838 solid;
+	border-radius: 10px;
+	padding: 1em;
+}
+
+#iwName {
+	text-align: center;
+	margin: 0 0 5px 0;
+}
+
+.rating {
+	border: 1px #717171 solid;
+	border-radius: 5px;
+	padding: .2em;
+}
+
+.rating:first-of-type {
+	margin: 0 0 5px 0;
+}
+
+.rating * {
+	display: inline;
+	margin: auto 2px;
+}
+
 @media (max-width: 780px) {
 	body {
 		font-size: 12px;

@@ -41,12 +41,12 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
 var infoWindowContent = 
   "<div id='infowindow'>" + 
     "<h2 id='iwName'></h2>" + 
-    "<div id='iwYelp'>" + 
+    "<div id='iwYelp' class='rating'>" + 
       "<img src='img/yelp-logo.png' alt='The Yelp Logo' />" +
       "<p>Rating: </p>" +
       "<img id='yelpRating' src='img/loading.gif' />" + 
     "</div>" + 
-    "<div id='iwFoursquare'>" + 
+    "<div id='iwFoursquare' class='rating'>" + 
       "<img src ='img/foursquare-logo.png' alt='The Foursquare Logo' />" + 
       "<span id='foursquareRating'>" + 
         "<img src='img/loading.gif' />" +
