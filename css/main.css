@@ -1,15 +1,16 @@
 /* must have a set height or else the google map doesn't work,
 and you can't have a height without a width! */
-body, html {
+body,
+html {
 	height: 100%;
 	width: 100%;
 	background-color: #fffafa;
 	color: #383838;
 }
 
-.map { 
+.map {
 	float: left;
-	height: 100%;  
+	height: 100%;
 	width: 75%;
 }
 
@@ -31,7 +32,7 @@ ul {
 }
 
 li {
-	margin: .8em 0 0 0;
+	margin: 0.8em 0 0 0;
 }
 
 li span {
@@ -39,13 +40,13 @@ li span {
 	cursor: pointer;
 }
 
-#infowindow {
+.infowindow {
 	border: 1px #383838 solid;
 	border-radius: 10px;
 	padding: 1em;
 }
 
-#iwName {
+.iwName {
 	text-align: center;
 	margin: 0 0 5px 0;
 }
@@ -53,7 +54,7 @@ li span {
 .rating {
 	border: 1px #717171 solid;
 	border-radius: 5px;
-	padding: .2em;
+	padding: 0.2em;
 }
 
 .rating:first-of-type {
@@ -78,4 +79,3 @@ li span {
 	}
 
 }
-

@@ -1,36 +1,36 @@
 // Constructor funciton to turn model data into Brewery objects
 var Brewery = function(data) {
   var self = this;
-  this.name = ko.observable(data.name);
-  this.address = ko.observable(data.address);
-  this.latLng = ko.observable(new google.maps.LatLng(data.lat, data.lng));
-  this.yelpID = ko.observable(data.yelpID);
-  this.foursquareID = ko.observable(data.foursquareID);
+  self.name = ko.observable(data.name);
+  self.address = ko.observable(data.address);
+  self.latLng = ko.observable(new google.maps.LatLng(data.lat, data.lng));
+  self.yelpID = ko.observable(data.yelpID);
+  self.foursquareID = ko.observable(data.foursquareID);
 
   // Create markers, but don't set them on the map yet
-  this.marker = new google.maps.Marker({
-      position: this.latLng(),
+  self.marker = new google.maps.Marker({
+      position: self.latLng(),
       map: null,
-      title: this.name()
+      title: self.name()
   });
 
   // Function to display or hide the marker
   // Nested if statements to avoid markers flickering on each keystroke
-  this.toggleMarker = function(value) {
+  self.toggleMarker = function(value) {
     if (value === map) {
       if (self.marker.map === null) {
-        self.marker.setMap(map)
+        self.marker.setMap(map);
       }
     } else {
-      self.marker.setMap(null)
+      self.marker.setMap(null);
     }
-  }
+  };
 };
 
 // Make the map!
 var map = new google.maps.Map(document.getElementById('google_map'), {
     zoom: 12,
-    center: { 
+    center: {
       lat: 39.845679452282155,
       lng: -86.16081458203126
     }
@@ -38,37 +38,37 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
 
 // Get the default InfoWindow content ready
 // There is only one InfoWindow, and it's content changes based on which brewery is clicked
-var infoWindowContent = 
-  "<div id='infowindow'>" + 
-    "<h2 id='iwName'></h2>" + 
-    "<div id='iwYelp' class='rating'>" + 
+var infoWindowContent =
+  "<div id='infowindow' class='infowindow'>" +
+    "<h2 id='iwName' class='iwName'></h2>" +
+    "<div id='iwYelp' class='rating'>" +
       "<img src='img/yelp-logo.png' alt='The Yelp Logo' />" +
       "<p>Rating: </p>" +
-      "<img id='yelpRating' src='img/loading.gif' />" + 
-    "</div>" + 
-    "<div id='iwFoursquare' class='rating'>" + 
-      "<img src ='img/foursquare-logo.png' alt='The Foursquare Logo' />" + 
-      "<span id='foursquareRating'>" + 
+      "<img id='yelpRating' src='img/loading.gif' />" +
+    "</div>" +
+    "<div id='iwFoursquare' class='rating'>" +
+      "<img src ='img/foursquare-logo.png' alt='The Foursquare Logo' />" +
+      "<span id='foursquareRating'>" +
         "<img src='img/loading.gif' />" +
-      "</span>" + 
-    "</div>" + 
+      "</span>" +
+    "</div>" +
   "</div>";
 
 // All the important stuff happens in here
 var ViewModel = function() {
   var self = this;
 
-  this.searchString = ko.observable('');
+  self.searchString = ko.observable('');
 
   // This array will hold all of the brewery objects
-  this.locations = ko.observableArray([]);
+  self.locations = ko.observableArray([]);
   breweries.forEach(function(breweryData) {
-    self.locations.push( new Brewery(breweryData) )
+    self.locations.push(new Brewery(breweryData));
   });
 
-  // Add a click handler to each marker.  
+  // Add a click handler to each marker.
   // Can maybe be combined into the locations array creator.
-  this.locations().forEach(function(brewery) {
+  self.locations().forEach(function(brewery) {
     google.maps.event.addListener(brewery.marker, 'click', function() {
       self.handleClick(brewery);
     });
@@ -76,9 +76,11 @@ var ViewModel = function() {
 
   // Determine which locations to display based on the user's search
   // This is an array that is a computed observable, but it's NOT an _observable_ array
-  this.filteredLocations = ko.computed(function() {
-    var searchedBreweries = [];
-    for (i = 0; i < self.locations().length; i++) {
+  self.filteredLocations = ko.computed(function() {
+    var searchedBreweries = [],
+        locationLength = self.locations().length;
+
+    for (i = 0; i < locationLength; i++) {
         if (self.locations()[i].name().toLowerCase().indexOf(self.searchString().toLowerCase()) != -1) {
           searchedBreweries.push(self.locations()[i]);
           self.locations()[i].toggleMarker(map);
@@ -87,15 +89,15 @@ var ViewModel = function() {
         }
     }
     // Array must be sorted here because it's not an observable array
-    return searchedBreweries.sort(function (l, r) { return l.name() > r.name() ? 1 : -1 });
-  })
+    return searchedBreweries.sort(function (l, r) { return l.name() > r.name() ? 1 : -1;});
+  });
 
   // Create one infowindow object that will be opened at various locations and have its contents changed
-  this.infowindow = new google.maps.InfoWindow();
+  self.infowindow = new google.maps.InfoWindow();
   self.infowindow.setContent(infoWindowContent);
 
   // All kinds of stuff needs to happen when a marker or list item is clicked on
-  this.handleClick = function(brewery) {
+  self.handleClick = function(brewery) {
     // Zoom in, center, and bounce the marker
     map.setZoom(14);
     map.setCenter(brewery.latLng());
@@ -107,10 +109,10 @@ var ViewModel = function() {
     // Open the InfoWindow on the associated marker
     self.infowindow.open(map, brewery.marker);
     $('#iwName').text(brewery.name());
-  }
+  };
 
   // Get that Yelp info!
-  this.getYelpInfo = function(brewery) {
+  self.getYelpInfo = function(brewery) {
     // Set rating to a loading gif
     $('#yelpRating').attr("src", 'img/loading.gif');
 
@@ -123,7 +125,7 @@ var ViewModel = function() {
         return (Math.floor(Math.random() * 1e12).toString());
     };
 
-    var parameters = 
+    var parameters =
         {
             oauth_consumer_key : '6FZQD1_YWvn2MNTmlYBVNQ',
             oauth_token : 'j8iHnHl6tE2kRly_vOnxXZHYQZfIsIXR',
@@ -164,10 +166,10 @@ var ViewModel = function() {
 
     // Holy smokes, we finally make the ajax call here
     $.ajax(settings);
-  }
+  };
 
   // Get that Foursquare info!
-  this.getFoursquareInfo = function(brewery) {
+  self.getFoursquareInfo = function(brewery) {
     // Loading gif!
     $('#foursquareRating').html('<img src="img/loading.gif" />');
 
@@ -177,7 +179,7 @@ var ViewModel = function() {
     var foursquareClientID = 'YH1RZFX1LIWV00KWMBE4IAMQAMRRIWUY2VBW5ERBQ0O0BWUP';
 
     // but it's still not exactly secure.
-    // Once I'm done with the final project, 
+    // Once I'm done with the final project,
     // I'm gonna figure out how do this serverside using node.js
     var foursquareClientSecret = 'OHZQMS0ZWF0WC0NY5TPTMZLKUSLT2PATBTLSLN2OPMXFIVLB';
 
@@ -192,8 +194,8 @@ var ViewModel = function() {
         if (results.response.venue.rating) {
           $('#foursquareRating').html('<p>Rating: ' + results.response.venue.rating + ' out of 10 based on ' + results.response.venue.ratingSignals + ' ratings!</p>');
         } else {
-          $('#foursquareRating').html('<p>Not enough ratings! Why don\'t you go there, have some beers, and rate it?!</p>')
-        };
+          $('#foursquareRating').html('<p>Not enough ratings! Why don\'t you go there, have some beers, and rate it?!</p>');
+        }
       }
       // No dedicated error handler cause I'm just using the loading gif
     };
@@ -201,13 +203,8 @@ var ViewModel = function() {
     // The actuall ajax call!
     $.ajax(settings);
 
-  }
-}
+  };
+};
 
 // Gotta apply the bindings or nothing happens!
 ko.applyBindings( new ViewModel() );
-
-
-
-
-
