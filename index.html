@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Indianapolis Breweries</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/offline.css">
@@ -12,7 +12,7 @@
         <div class="map" id="google_map"></div>
         <div class="menu">
             <div class="search">
-                <input type="text" data-bind="textInput: searchString" placeholder="Search Brewery Names!" />
+                <input type="text" data-bind="textInput: searchString" placeholder="Search!" />
             </div>
             <div class="places">
                 <ul data-bind="foreach: filteredLocations">
