@@ -6,22 +6,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
-        <link rel="stylesheet" href="css/offline.css">
     </head>
     <body>
-        <div class="map" id="google_map"></div>
-        <div class="menu">
-            <div class="search">
-                <input type="text" data-bind="textInput: searchString" placeholder="Search!" />
-            </div>
+        <div class="mobile-places">
             <div class="places">
                 <ul data-bind="foreach: filteredLocations">
                     <li><span data-bind="text: name, click: $parent.handleClick" /></li>
                 </ul>
             </div>
         </div>
+        <div class="container" id="right">
+            <div class="mobile-menu">
+                <img class="mobile-menu-icon" id="ham" src="img/mobile-menu-32x32.png" height="32" width="32" alt="List of Breweries" />
+                <input class="mobile-search" type="text" data-bind="textInput: searchString" placeholder="Search!" />
+            </div>
+            <div class="map" id="google_map"></div>
+            <div class="menu">
+                <div class="search">
+                    <input type="text" data-bind="textInput: searchString" placeholder="Search!" />
+                </div>
+                <div class="places">
+                    <ul data-bind="foreach: filteredLocations">
+                        <li><span data-bind="text: name, click: $parent.handleClick" /></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-        <script src='js/vendor/offline.js'></script>
         <script src='js/vendor/oauth-signature.min.js'></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1z0leMsqILGNbXvZ-21ODoVwGob_a5W8"></script>
