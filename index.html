@@ -8,15 +8,28 @@
         <link rel="stylesheet" href="css/main.css">
     </head>
     <body>
-        <div class="map" id="google_map"></div>
-        <div class="menu">
-            <div class="search">
-                <input type="text" data-bind="textInput: searchString" placeholder="Search!" />
-            </div>
+        <div class="mobile-places">
             <div class="places">
                 <ul data-bind="foreach: filteredLocations">
                     <li><span data-bind="text: name, click: $parent.handleClick" /></li>
                 </ul>
+            </div>
+        </div>
+        <div class="container" id="right">
+            <div class="mobile-menu">
+                <img class="mobile-menu-icon" id="ham" src="img/mobile-menu-32x32.png" height="32" width="32" alt="List of Breweries" />
+                <input class="mobile-search" type="text" data-bind="textInput: searchString" placeholder="Search!" />
+            </div>
+            <div class="map" id="google_map"></div>
+            <div class="menu">
+                <div class="search">
+                    <input type="text" data-bind="textInput: searchString" placeholder="Search!" />
+                </div>
+                <div class="places">
+                    <ul data-bind="foreach: filteredLocations">
+                        <li><span data-bind="text: name, click: $parent.handleClick" /></li>
+                    </ul>
+                </div>
             </div>
         </div>
 

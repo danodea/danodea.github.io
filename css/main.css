@@ -9,6 +9,16 @@ body {
 	color: #383838;
 }
 
+.container {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	position: fixed;
+	left: 0px;
+	z-index: 5;
+}
+
 .map {
 	float: left;
 	height: 100%;
@@ -67,6 +77,18 @@ li span {
 	margin: auto 2px;
 }
 
+.mobile-menu {
+	height: 32px;
+	display: none;
+}
+
+.mobile-places {
+	float: left;
+	width: 350px;
+	height: 100%;
+	padding-top: 40px;
+}
+
 @media (max-width: 780px) {
 	body {
 		font-size: 12px;
@@ -75,8 +97,36 @@ li span {
 }
 
 @media (max-width: 500px) {
-	body {
-		font-size: 9px;
+
+	.mobile-menu {
+		display: inline;
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.menu {
+		display: none;
+	}
+
+	.mobile-search {
+		font-size: 20px;
+		height: 24px;
+		width: calc(100% - 40px);
+		margin: 0px;
+		padding: 0px;
+		position: absolute;
+		top: 4px;
+		left: 34px;
+	}
+
+	.mobile-menu-icon {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	.map {
+		width: 100%;
+		height: calc(100% - 32px);
 	}
 
 }

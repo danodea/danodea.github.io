@@ -36,6 +36,17 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
     }
 });
 
+var shown = false;
+$('#ham').click(function() {
+  if (shown == false) {
+    $('#right').animate({ left: 250 }, 'slow');
+    shown = true;
+  } else {
+    $('#right').animate({ left: 0 }, 'slow');
+    shown = false;
+  }
+});
+
 // Get the default InfoWindow content ready
 // There is only one InfoWindow, and it's content changes based on which brewery is clicked
 var infoWindowContent =
@@ -109,6 +120,8 @@ var ViewModel = function() {
     // Open the InfoWindow on the associated marker
     self.infowindow.open(map, brewery.marker);
     $('#iwName').text(brewery.name());
+    $('#right').animate({ left: 0 }, 'slow');
+    shown = false;
   };
 
   // Get that Yelp info!
