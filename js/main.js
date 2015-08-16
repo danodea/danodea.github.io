@@ -36,6 +36,7 @@ var map = new google.maps.Map(document.getElementById('google_map'), {
     }
 });
 
+// hide and show the list of places in mobile view
 var shown = false;
 $('#ham').click(function() {
   if (shown == false) {
@@ -120,8 +121,9 @@ var ViewModel = function() {
     // Open the InfoWindow on the associated marker
     self.infowindow.open(map, brewery.marker);
     $('#iwName').text(brewery.name());
-    $('#right').animate({ left: 0 }, 'slow');
-    shown = false;
+    if (shown == true) {
+      $('#right').animate({ left: 0 }, 'slow');
+      shown = false;}
   };
 
   // Get that Yelp info!

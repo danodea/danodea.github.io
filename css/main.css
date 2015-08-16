@@ -1,4 +1,4 @@
-/* must have a set height or else the google map doesn't work */
+/* map div and all it's parents must have a set height or else the google map doesn't work */
 html {
 	height: 100%
 }
@@ -9,6 +9,7 @@ body {
 	color: #383838;
 }
 
+/* Holds everything that isn't mobile-only */
 .container {
 	height: 100%;
 	width: 100%;
@@ -25,6 +26,8 @@ body {
 	width: 75%;
 }
 
+
+/* vvv everything menu/search/list related */
 .menu {
 	width: 25%;
 	height: 100%;
@@ -50,7 +53,11 @@ li span {
 	text-decoration: underline;
 	cursor: pointer;
 }
+/* ^^^ everything menu/search/list related */
 
+
+
+/* vvv infowindow stuff vvv */
 .infowindow {
 	border: 1px #383838 solid;
 	border-radius: 10px;
@@ -76,7 +83,11 @@ li span {
 	display: inline;
 	margin: auto 2px;
 }
+/* ^^^ infowindow stuff ^^^*/
 
+
+
+/* vvv mobile stuff vvv*/
 .mobile-menu {
 	height: 32px;
 	display: none;
@@ -88,14 +99,17 @@ li span {
 	height: 100%;
 	padding-top: 40px;
 }
+/* ^^^ mobile stuff ^^^ */
 
+
+/* tablet sized */
 @media (max-width: 780px) {
 	body {
 		font-size: 12px;
 	}
-
 }
 
+/* phone sized */
 @media (max-width: 500px) {
 
 	.mobile-menu {
@@ -129,4 +143,11 @@ li span {
 		height: calc(100% - 32px);
 	}
 
+}
+
+/* make sure the mobile list is hidden when transitioning to bigger screens */
+@media (min-width: 500px) {
+	.container {
+		left: 0px !important;
+	}
 }
