@@ -1,0 +1,19 @@
+html, body {
+	height: 100%;
+	overflow-x: hidden;
+	background-image: url('../img/bg.png');
+}
+
+.dansphoto {
+	position: absolute;
+	top: 0px;
+	background-image: url('../img/dan.jpg');
+	height: 100%;
+	background-position: 39% 0%;
+}
+
+@media (max-width: 991px) {
+	.philbert {
+		padding-left: 3em;
+	}
+}
