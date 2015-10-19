@@ -2,7 +2,7 @@ var projects = [
 	{
 		'name': 'Indianapolis Brewery Map',
 		'url': 'http://danodea.github.io/indy-brewery-map/',
-		'description': 'A single page map app using multiple APIs to visualize information about all the breweries in Indianapolis!',
+		'description': 'A single page map app using multiple APIs to visualize information about all the breweries in Indianapolis!  Built with Knockout and Google Maps.',
 		'live': true
 	},
 	{
@@ -14,13 +14,13 @@ var projects = [
 	{
 		'name': 'Frogger Clone',
 		'url': 'http://danodea.github.io/arcade-game-clone/',
-		'description': 'A simple clone of the classic arcade game Frogger made with HTML5 Canvas.',
+		'description': 'A simple clone of the classic arcade game Frogger made with HTML5 Canvas and jQuery.',
 		'live': true
 	},
 	{
 		'name': 'Better Soccer Rosters',
 		'url': 'https://github.com/danodea/better-soccer-rosters',
-		'description': 'An effort to create a better MLS roster app.',
+		'description': 'An effort to create a better MLS roster app.  Built with Node.js.',
 		'live': false
 	},
 	{
@@ -28,6 +28,12 @@ var projects = [
 		'url': 'https://github.com/UniversalGUI/UGUI',
 		'description': 'UGUI gives a face to command line programs, and that face is HTML, CSS, & JS.',
 		'live': false
+	},
+	{
+		'name': 'Calorie Counter',
+		'url': 'http://danodea.github.io/calorie-counter/',
+		'description': 'Count your calories by using this simple app.  Built with Backbone, and gets data from the nutritionix API.',
+		'live': true
 	}
 ];
 
