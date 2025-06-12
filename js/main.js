@@ -29,7 +29,7 @@ var projects = [
     name: "Github User UI",
     url: "https://github.com/danodea/github-user-ui",
     description:
-      "Use the (mocked up) public GitHub User API to show data using React, Typescript, and TailwindCSS",
+      "Use the public GitHub User API to show data using React, Typescript, and TailwindCSS",
     live: false,
   },
   {
